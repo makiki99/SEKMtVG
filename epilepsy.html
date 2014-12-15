@@ -1,0 +1,377 @@
+<!doctype html>
+<head>
+</head>
+<body id='booty' style='background-color:#cc6; font-family:"Comic Sans MS";'>
+	<div id="main" style="height:100%; width: 100%;">
+		<div id="logo" style="position:absolute; top:3%; left:9%; text-align:center;">
+			<div style="font-size:1.3em;">SUPER EPILEPTIC KEYBOARD MASHING</div>
+			<div style="font-size:0.9em; text-align:right; margin-right:1em;">THE VIDEO GAME</div>
+		</div>
+		<div id="hpbar" style="position:absolute; top:21%; left:12.5%; height:300px; width:30px; background-color:#000; border: 2px solid black;">
+			<div id="hp" style="height:300px; width:100%; background-color:#f00; position: absolute;"></div>
+		</div>
+		<div id="level" style='position:absolute; top:16%; left:64%; font-size:1.25em; text-transform:uppercase;'>
+			LEVEL <span id='lvlnum'>0</span>
+		</div>
+		<div id="text" style='position:absolute; top:40%; left:45%; font-size:2.5em; text-transform:uppercase;'>
+			<span id="done" style='color:#666'></span><span id="notdone" style='color:#fff'>begin</span>
+		</div>
+	</div>
+	<div id="lose" style="display:none; height:100%; width: 100%;">
+		YOU LOST. PRESS F5 TO RESTART.
+	</div>
+	<div id="win" style="display:none; height:100%; width: 100%;">
+		VICTORY!!! PRESS F5 TO RESTART.
+	</div>
+	<canvas id="wtf" width="300" height="300" style='position:absolute;'></canvas>
+	<script>
+		//keyboard handling
+		//main code
+		var level = 0
+		var text = "begin"
+		var letter = 0
+		var hp = 300
+		var randomstring = "qwertyuiopasdfghjklzxcvbnm"
+		var foo = 0
+		var bar = 0
+		var ctx = document.getElementById("wtf").getContext("2d")
+		var crnd = 0
+		window.addEventListener("keypress", function keyCheck(event) {
+			if (event.keyCode == text.charCodeAt(letter)) {
+				// valid letter
+				letter = letter + 1
+				if (text.slice(0,letter) == text){
+					//next level on word complete
+					level = level + 1
+					hp = 300
+					letter = 0
+					text = ""
+					for (i = 0 ; i < 5+level ; i = i + 1) {
+					text += randomstring.charAt(Math.floor(Math.random() * randomstring.length))
+					}
+					document.getElementById('lvlnum').innerHTML = level
+					if (level > 10) {
+						document.getElementById("main").style.display = "none"
+						document.getElementById("win").style.display = "block"
+					}
+				}
+				// write text
+				document.getElementById("done").innerHTML = text.slice(0,letter)
+				document.getElementById("notdone").innerHTML = text.slice(letter,text.length)
+			} else {
+				// invalid letter
+				damage(50)
+			}
+		}
+		,false)
+		function damage(x){
+			if (level != 0 || level > 10) {
+				hp = hp - x
+				document.getElementById("hp").style.height = hp + "px"
+				document.getElementById("hp").style.top = (300 - hp) + "px"
+			}
+			if (hp <= 0) {
+				hp = 0
+				document.getElementById("hp").style.height = hp + "px"
+				document.getElementById("hp").style.top = (300 - hp) + "px"
+				document.getElementById("main").style.display = "none"
+				document.getElementById("lose").style.display = "block"
+			}
+		}
+		function randomColor(){
+			var color = Math.floor(Math.random() * Math.pow(256, 3)).toString(16);
+			while(color.length < 6) {
+				color = "0" + color;
+			}
+			return "#" + color;
+		}
+		//hp decay
+		setInterval(function(){damage(1)},100)
+		//epilepsy
+		setInterval(function(){
+			if (level == 1) {
+				//shake tier 1
+				document.getElementById('logo').style.top = (2.75+Math.random()*0.5)+'%'
+				document.getElementById('logo').style.left = (8.75+Math.random()*0.5)+'%'
+				document.getElementById('hpbar').style.top = (20.75+Math.random()*0.5)+'%'
+				document.getElementById('hpbar').style.left = (12.25+Math.random()*0.5)+'%'
+				document.getElementById('level').style.top = (15.75+Math.random()*0.5)+'%'
+				document.getElementById('level').style.left = (63.75+Math.random()*0.5)+'%'
+				document.getElementById('text').style.top = (39.75+Math.random()*0.5)+'%'
+				document.getElementById('text').style.left = (44.75+Math.random()*0.5)+'%'
+			} else if (level == 2) {
+				//shake tier 2
+				document.getElementById('logo').style.top = (2+Math.random()*2)+'%'
+				document.getElementById('logo').style.left = (8+Math.random()*2)+'%'
+				document.getElementById('hpbar').style.top = (20+Math.random()*2)+'%'
+				document.getElementById('hpbar').style.left = (11.5+Math.random()*2)+'%'
+				document.getElementById('level').style.top = (15+Math.random()*2)+'%'
+				document.getElementById('level').style.left = (63+Math.random()*2)+'%'
+				document.getElementById('text').style.top = (39+Math.random()*2)+'%'
+				document.getElementById('text').style.left = (44+Math.random()*2)+'%'
+			} else if (level == 3) {
+				//shake tier 2
+				document.getElementById('logo').style.top = (2+Math.random()*2)+'%'
+				document.getElementById('logo').style.left = (8+Math.random()*2)+'%'
+				document.getElementById('hpbar').style.top = (20+Math.random()*2)+'%'
+				document.getElementById('hpbar').style.left = (11.5+Math.random()*2)+'%'
+				document.getElementById('level').style.top = (15+Math.random()*2)+'%'
+				document.getElementById('level').style.left = (63+Math.random()*2)+'%'
+				document.getElementById('text').style.top = (39+Math.random()*2)+'%'
+				document.getElementById('text').style.left = (44+Math.random()*2)+'%'
+				//color change tier 1
+				foo = foo + 1
+				if (foo > 15) {
+					document.getElementById('booty').style.backgroundColor = randomColor()
+					foo = 0
+				}
+			} else if (level == 4) {
+				//shake tier 2
+				document.getElementById('logo').style.top = (2+Math.random()*2)+'%'
+				document.getElementById('logo').style.left = (8+Math.random()*2)+'%'
+				document.getElementById('hpbar').style.top = (20+Math.random()*2)+'%'
+				document.getElementById('hpbar').style.left = (11.5+Math.random()*2)+'%'
+				document.getElementById('level').style.top = (15+Math.random()*2)+'%'
+				document.getElementById('level').style.left = (63+Math.random()*2)+'%'
+				document.getElementById('text').style.top = (39+Math.random()*2)+'%'
+				document.getElementById('text').style.left = (44+Math.random()*2)+'%'
+				//color change tier 2
+				foo = foo + 1
+				if (foo > 10) {
+					document.getElementById('booty').style.backgroundColor = randomColor()
+					document.getElementById('hp').style.backgroundColor = randomColor()
+					document.getElementById('logo').style.color = randomColor()
+					document.getElementById('level').style.color = randomColor()
+					document.getElementById('done').style.color = randomColor()
+					document.getElementById('notdone').style.color = randomColor()
+					foo = 0
+				}
+			} else if (level == 5) {
+				//shake tier 3
+				document.getElementById('logo').style.top = (1+Math.random()*5)+'%'
+				document.getElementById('logo').style.left = (6.5+Math.random()*5)+'%'
+				document.getElementById('hpbar').style.top = (18.5+Math.random()*5)+'%'
+				document.getElementById('hpbar').style.left = (10+Math.random()*5)+'%'
+				document.getElementById('level').style.top = (13.5+Math.random()*5)+'%'
+				document.getElementById('level').style.left = (61.5+Math.random()*5)+'%'
+				document.getElementById('text').style.top = (37.5+Math.random()*5)+'%'
+				document.getElementById('text').style.left = (42.5+Math.random()*5)+'%'
+				//color change tier 2
+				foo = foo + 1
+				if (foo > 10) {
+					document.getElementById('booty').style.backgroundColor = randomColor()
+					document.getElementById('hp').style.backgroundColor = randomColor()
+					document.getElementById('logo').style.color = randomColor()
+					document.getElementById('level').style.color = randomColor()
+					document.getElementById('done').style.color = randomColor()
+					document.getElementById('notdone').style.color = randomColor()
+					foo = 0
+				}
+			} else if (level == 6) {
+				//shake tier 3
+				document.getElementById('logo').style.top = (1+Math.random()*5)+'%'
+				document.getElementById('logo').style.left = (6.5+Math.random()*5)+'%'
+				document.getElementById('hpbar').style.top = (18.5+Math.random()*5)+'%'
+				document.getElementById('hpbar').style.left = (10+Math.random()*5)+'%'
+				document.getElementById('level').style.top = (13.5+Math.random()*5)+'%'
+				document.getElementById('level').style.left = (61.5+Math.random()*5)+'%'
+				document.getElementById('text').style.top = (37.5+Math.random()*5)+'%'
+				document.getElementById('text').style.left = (42.5+Math.random()*5)+'%'
+				//color change tier 3
+				foo = foo + 1
+				if (foo > 6) {
+					document.getElementById('booty').style.backgroundColor = randomColor()
+					document.getElementById('hp').style.backgroundColor = randomColor()
+					document.getElementById('hpbar').style.backgroundColor = randomColor()
+					document.getElementById('logo').style.backgroundColor = randomColor()
+					document.getElementById('level').style.backgroundColor = randomColor()
+					document.getElementById('logo').style.color = randomColor()
+					document.getElementById('level').style.color = randomColor()
+					document.getElementById('done').style.color = randomColor()
+					document.getElementById('notdone').style.color = randomColor()
+					foo = 0
+				}
+			} else if (level == 7) {
+				//shake tier 3
+				document.getElementById('logo').style.top = (1+Math.random()*5)+'%'
+				document.getElementById('logo').style.left = (6.5+Math.random()*5)+'%'
+				document.getElementById('hpbar').style.top = (18.5+Math.random()*5)+'%'
+				document.getElementById('hpbar').style.left = (10+Math.random()*5)+'%'
+				document.getElementById('level').style.top = (13.5+Math.random()*5)+'%'
+				document.getElementById('level').style.left = (61.5+Math.random()*5)+'%'
+				document.getElementById('text').style.top = (37.5+Math.random()*5)+'%'
+				document.getElementById('text').style.left = (42.5+Math.random()*5)+'%'
+				//color change tier 3
+				foo = foo + 1
+				if (foo > 6) {
+					document.getElementById('booty').style.backgroundColor = randomColor()
+					document.getElementById('hp').style.backgroundColor = randomColor()
+					document.getElementById('hpbar').style.backgroundColor = randomColor()
+					document.getElementById('logo').style.backgroundColor = randomColor()
+					document.getElementById('level').style.backgroundColor = randomColor()
+					document.getElementById('logo').style.color = randomColor()
+					document.getElementById('level').style.color = randomColor()
+					document.getElementById('done').style.color = randomColor()
+					document.getElementById('notdone').style.color = randomColor()
+					foo = 0
+				}
+				//shapespawn tier 1
+				bar = bar + 1
+				if (bar > 25) {
+					document.getElementById('wtf').style.top = (-10+Math.random()*100)+'%'
+					document.getElementById('wtf').style.left = (-10+Math.random()*100)+'%'
+					ctx.clearRect(0, 0, document.getElementById("wtf").width, document.getElementById("wtf").height)
+					ctx.fillStyle = randomColor()
+					crnd = Math.floor(Math.random()*3)
+					if (crnd == 0) {
+						ctx.fillRect(50,50,200,200)
+					} else if (crnd == 1) {
+						ctx.beginPath()
+						ctx.moveTo(150,30)
+						ctx.lineTo(260,250)
+						ctx.lineTo(40,250)
+						ctx.lineTo(150,30)
+						ctx.fill()
+					}
+					bar=0
+				}
+			} else if (level == 8) {
+				//shake tier 4
+				document.getElementById('logo').style.top = (Math.random()*9-1)+'%'
+				document.getElementById('logo').style.left = (4.5+Math.random()*9)+'%'
+				document.getElementById('hpbar').style.top = (16.5+Math.random()*9)+'%'
+				document.getElementById('hpbar').style.left = (8+Math.random()*9)+'%'
+				document.getElementById('level').style.top = (11.5+Math.random()*9)+'%'
+				document.getElementById('level').style.left = (59.5+Math.random()*9)+'%'
+				document.getElementById('text').style.top = (35.5+Math.random()*9)+'%'
+				document.getElementById('text').style.left = (40.5+Math.random()*9)+'%'
+				//color change tier 4
+				foo = foo + 1
+				if (foo > 3) {
+					document.getElementById('booty').style.backgroundColor = randomColor()
+					document.getElementById('hp').style.backgroundColor = randomColor()
+					document.getElementById('hpbar').style.backgroundColor = randomColor()
+					document.getElementById('logo').style.backgroundColor = randomColor()
+					document.getElementById('level').style.backgroundColor = randomColor()
+					document.getElementById('logo').style.color = randomColor()
+					document.getElementById('level').style.color = randomColor()
+					document.getElementById('done').style.color = randomColor()
+					document.getElementById('notdone').style.color = randomColor()
+					foo = 0
+				}
+				//shapespawn tier 1
+				bar = bar + 1
+				if (bar > 25) {
+					document.getElementById('wtf').style.top = (-10+Math.random()*100)+'%'
+					document.getElementById('wtf').style.left = (-10+Math.random()*100)+'%'
+					ctx.clearRect(0, 0, document.getElementById("wtf").width, document.getElementById("wtf").height)
+					ctx.fillStyle = randomColor()
+					crnd = Math.floor(Math.random()*3)
+					if (crnd == 0) {
+						ctx.fillRect(50,50,200,200)
+					} else if (crnd == 1) {
+						ctx.beginPath()
+						ctx.moveTo(150,30)
+						ctx.lineTo(260,250)
+						ctx.lineTo(40,250)
+						ctx.lineTo(150,30)
+						ctx.fill()
+					}
+					bar=0
+				}
+			} else if (level == 9) {
+				//shake tier MAX
+				document.getElementById('logo').style.top = (Math.random()*15-3)+'%'
+				document.getElementById('logo').style.left = (Math.random()*25-2)+'%'
+				document.getElementById('hpbar').style.top = (8.5+Math.random()*25)+'%'
+				document.getElementById('hpbar').style.left = (Math.random()*25)+'%'
+				document.getElementById('level').style.top = (3.5+Math.random()*25)+'%'
+				document.getElementById('level').style.left = (51.5+Math.random()*25)+'%'
+				document.getElementById('text').style.top = (27.5+Math.random()*25)+'%'
+				document.getElementById('text').style.left = (32.5+Math.random()*25)+'%'
+				//color change tier 5
+				foo = foo + 1
+				if (foo > 2) {
+					document.getElementById('booty').style.backgroundColor = randomColor()
+					document.getElementById('hp').style.backgroundColor = randomColor()
+					document.getElementById('hpbar').style.backgroundColor = randomColor()
+					document.getElementById('logo').style.backgroundColor = randomColor()
+					document.getElementById('level').style.backgroundColor = randomColor()
+					document.getElementById('logo').style.color = randomColor()
+					document.getElementById('level').style.color = randomColor()
+					document.getElementById('done').style.color = randomColor()
+					document.getElementById('notdone').style.color = randomColor()
+					foo = 0
+				}
+				//shapespawn tier 2
+				bar = bar + 1
+				if (bar > 16) {
+					document.getElementById('wtf').style.top = (-10+Math.random()*100)+'%'
+					document.getElementById('wtf').style.left = (-10+Math.random()*100)+'%'
+					ctx.clearRect(0, 0, document.getElementById("wtf").width, document.getElementById("wtf").height)
+					ctx.fillStyle = randomColor()
+					crnd = Math.floor(Math.random()*3)
+					if (crnd == 0) {
+						ctx.fillRect(25,25,250,250)
+					} else if (crnd == 1) {
+						ctx.beginPath()
+						ctx.moveTo(150,30)
+						ctx.lineTo(260,250)
+						ctx.lineTo(40,250)
+						ctx.lineTo(150,30)
+						ctx.fill()
+					} else if (crnd == 2) {
+						ctx.beginPath()
+						ctx.arc(150, 150, 125, 0, (Math.PI/180)*360, true)
+						ctx.fill()
+					}
+					bar=0
+				}
+			} else if (level == 10) {
+				//shake tier over 9000
+				document.getElementById('logo').style.top = (Math.random()*30-6)+'%'
+				document.getElementById('logo').style.left = (Math.random()*40-12)+'%'
+				document.getElementById('hpbar').style.top = (Math.random()*40)+'%'
+				document.getElementById('hpbar').style.left = (Math.random()*40-10)+'%'
+				document.getElementById('level').style.top = (Math.random()*50-15)+'%'
+				document.getElementById('level').style.left = (30+Math.random()*50)+'%'
+				document.getElementById('text').style.top = (20+Math.random()*40)+'%'
+				document.getElementById('text').style.left = (25+Math.random()*40)+'%'
+				//color change tier MAX
+				document.getElementById('booty').style.backgroundColor = randomColor()
+				document.getElementById('hp').style.backgroundColor = randomColor()
+				document.getElementById('hpbar').style.backgroundColor = randomColor()
+				document.getElementById('logo').style.backgroundColor = randomColor()
+				document.getElementById('level').style.backgroundColor = randomColor()
+				document.getElementById('logo').style.color = randomColor()
+				document.getElementById('level').style.color = randomColor()
+				document.getElementById('done').style.color = randomColor()
+				document.getElementById('notdone').style.color = randomColor()
+				foo = 0
+				//shapespawn tier MAX
+				bar = bar + 1
+				if (bar > 5) {
+					document.getElementById('wtf').style.top = (-10+Math.random()*100)+'%'
+					document.getElementById('wtf').style.left = (-10+Math.random()*100)+'%'
+					ctx.fillStyle = randomColor()
+					crnd = Math.floor(Math.random()*3)
+					if (crnd == 0) {
+						ctx.fillRect(25,25,250,250)
+					} else if (crnd == 1) {
+						ctx.beginPath()
+						ctx.moveTo(150,30)
+						ctx.lineTo(260,250)
+						ctx.lineTo(40,250)
+						ctx.lineTo(150,30)
+						ctx.fill()
+					} else if (crnd == 2) {
+						ctx.beginPath()
+						ctx.arc(150, 150, 125, 0, (Math.PI/180)*360, true)
+						ctx.fill()
+					}
+					bar=0
+				}
+			}
+		},40)
+	</script>
+</body>
