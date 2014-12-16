@@ -16,14 +16,15 @@
 		<div id="text" style='position:absolute; top:40%; left:45%; font-size:2.5em; text-transform:uppercase;'>
 			<span id="done" style='color:#666'></span><span id="notdone" style='color:#fff'>begin</span>
 		</div>
+		<canvas id="wtf" width="300" height="300" style='position:absolute;'></canvas>
 	</div>
-	<div id="lose" style="display:none; height:100%; width: 100%;">
+	<div id="lose" style="display:none; height:100%; width: 100%; font-size:3em; text-align:center;">
 		YOU LOST. PRESS F5 TO RESTART.
 	</div>
-	<div id="win" style="display:none; height:100%; width: 100%;">
+	<div id="win" style="display:none; height:100%; width: 100%; font-size:3em; text-align:center;">
 		VICTORY!!! PRESS F5 TO RESTART.
 	</div>
-	<canvas id="wtf" width="300" height="300" style='position:absolute;'></canvas>
+	
 	<script>
 		//keyboard handling
 		//main code
@@ -37,30 +38,32 @@
 		var ctx = document.getElementById("wtf").getContext("2d")
 		var crnd = 0
 		window.addEventListener("keypress", function keyCheck(event) {
-			if (event.keyCode == text.charCodeAt(letter)) {
-				// valid letter
-				letter = letter + 1
-				if (text.slice(0,letter) == text){
-					//next level on word complete
-					level = level + 1
-					hp = 300
-					letter = 0
-					text = ""
-					for (i = 0 ; i < 5+level ; i = i + 1) {
-					text += randomstring.charAt(Math.floor(Math.random() * randomstring.length))
+			if (hp > 0) {
+				if (event.keyCode == text.charCodeAt(letter)) {
+					// valid letter
+					letter = letter + 1
+					if (text.slice(0,letter) == text){
+						//next level on word complete
+						level = level + 1
+						hp = 300
+						letter = 0
+						text = ""
+						for (i = 0 ; i < 5+level ; i = i + 1) {
+						text += randomstring.charAt(Math.floor(Math.random() * randomstring.length))
+						}
+						document.getElementById('lvlnum').innerHTML = level
+						if (level > 10) {
+							document.getElementById("main").style.display = "none"
+							document.getElementById("win").style.display = "block"
+						}
 					}
-					document.getElementById('lvlnum').innerHTML = level
-					if (level > 10) {
-						document.getElementById("main").style.display = "none"
-						document.getElementById("win").style.display = "block"
-					}
+					// write text
+					document.getElementById("done").innerHTML = text.slice(0,letter)
+					document.getElementById("notdone").innerHTML = text.slice(letter,text.length)
+				} else {
+					// invalid letter
+					damage(50)
 				}
-				// write text
-				document.getElementById("done").innerHTML = text.slice(0,letter)
-				document.getElementById("notdone").innerHTML = text.slice(letter,text.length)
-			} else {
-				// invalid letter
-				damage(50)
 			}
 		}
 		,false)
