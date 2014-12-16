@@ -68,7 +68,7 @@
 		}
 		,false)
 		function damage(x){
-			if (level != 0 || level > 10) {
+			if (level != 0 || level <= 10) {
 				hp = hp - x
 				document.getElementById("hp").style.height = hp + "px"
 				document.getElementById("hp").style.top = (300 - hp) + "px"
